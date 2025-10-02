@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,9 +26,9 @@ import com.manishjajoriya.moctale.ui.theme.Gray
 import com.manishjajoriya.moctale.ui.theme.Inter
 
 @Composable
-fun TopBar() {
+fun TopBar(modifier: Modifier = Modifier) {
   Row(
-      modifier = Modifier.background(Color.Black).fillMaxWidth().height(56.dp),
+      modifier = modifier.statusBarsPadding().background(Color.Black).fillMaxWidth().height(56.dp),
       horizontalArrangement = Arrangement.SpaceBetween,
       verticalAlignment = Alignment.CenterVertically,
   ) {
@@ -41,7 +42,7 @@ fun TopBar() {
               TextStyle(
                   fontFamily = Inter,
                   fontSize = Constants.largeFontSize,
-                  fontWeight = FontWeight.SemiBold,
+                  fontWeight = FontWeight.Black,
               ),
       )
       Spacer(Modifier.width(Constants.mediumPadding))

@@ -10,7 +10,7 @@ data class ExploreItem(
 )
 
 data class Content(
-    val caption: String,
+    val caption: String?,
     val image: String,
     @SerializedName("is_show") val isShow: Boolean,
     val name: String,

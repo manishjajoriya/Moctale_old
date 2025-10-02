@@ -7,17 +7,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import com.manishjajoriya.moctale.presentation.exploreScreen.component.Section
 import com.manishjajoriya.moctale.ui.theme.DarkPurple
 import com.manishjajoriya.moctale.ui.theme.LightPurple
 import com.manishjajoriya.moctale.ui.theme.MediumPurple
 import com.manishjajoriya.moctale.ui.theme.Purple
-import kotlin.math.exp
 
 @Composable
-fun ExploreScreen(exploreViewModel: ExploreViewModel) {
+fun ExploreScreen(exploreViewModel: ExploreViewModel, modifier: Modifier) {
+  val exploreList = exploreViewModel.exploreList
+  val loading = exploreViewModel.loading
+
   Box(
       modifier =
-          Modifier.fillMaxSize()
+          modifier
+              .fillMaxSize()
               .background(
                   brush =
                       Brush.verticalGradient(
@@ -27,6 +31,12 @@ fun ExploreScreen(exploreViewModel: ExploreViewModel) {
                       )
               )
   ) {
-    Text(text = "This is Explore Screen ${exploreViewModel.exploreList.size}")
+    if (loading) {
+      Text(text = "Loading…")
+    } else if (exploreList.isEmpty()) {
+      Text(text = "No items found")
+    } else {
+      Section(exploreList)
+    }
   }
 }
