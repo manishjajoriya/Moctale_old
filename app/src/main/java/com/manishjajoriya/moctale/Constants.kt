@@ -4,6 +4,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 object Constants {
+
+  const val BASE_URL = "https://www.moctale.in/api/"
+
   // Padding
   val extraSmallPadding = 4.dp
   val smallPadding = 8.dp
