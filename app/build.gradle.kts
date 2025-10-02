@@ -2,6 +2,8 @@ plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.compose)
+  id("com.google.devtools.ksp")
+  id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -25,18 +27,37 @@ android {
     }
   }
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
   }
-  kotlinOptions {
-    jvmTarget = "11"
-  }
-  buildFeatures {
-    compose = true
-  }
+  buildFeatures { compose = true }
 }
 
+//noinspection UseTomlInstead
 dependencies {
+  val retrofitVersion = "3.0.0"
+  val daggerHiltVersion = "2.57.2"
+  val coilVersion = "3.3.0"
+  val viewmodelVersion = "2.9.4"
+  val splashScreen = "1.0.1"
+  val navVersion = "2.9.5"
+
+  //  Api Calling
+  implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+  implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+  // Dependency Injection
+  implementation("com.google.dagger:hilt-android:$daggerHiltVersion")
+  ksp("com.google.dagger:hilt-android-compiler:$daggerHiltVersion")
+  implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
+  // Image Loading
+  implementation("io.coil-kt.coil3:coil-compose:$coilVersion")
+  implementation("io.coil-kt.coil3:coil-network-okhttp:$coilVersion")
+  // ViewModel
+  implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$viewmodelVersion")
+  // Splash Screen
+  implementation("androidx.core:core-splashscreen:$splashScreen")
+  // Navigation
+  implementation("androidx.navigation:navigation-compose:$navVersion")
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
