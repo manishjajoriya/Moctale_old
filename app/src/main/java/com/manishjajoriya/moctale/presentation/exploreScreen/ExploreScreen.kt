@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.navigation.NavHostController
 import com.manishjajoriya.moctale.presentation.exploreScreen.component.Section
 import com.manishjajoriya.moctale.ui.theme.DarkPurple
 import com.manishjajoriya.moctale.ui.theme.LightPurple
@@ -14,7 +15,11 @@ import com.manishjajoriya.moctale.ui.theme.MediumPurple
 import com.manishjajoriya.moctale.ui.theme.Purple
 
 @Composable
-fun ExploreScreen(exploreViewModel: ExploreViewModel, modifier: Modifier) {
+fun ExploreScreen(
+  exploreViewModel: ExploreViewModel,
+  navController: NavHostController,
+  modifier: Modifier
+) {
   val exploreList = exploreViewModel.exploreList
   val loading = exploreViewModel.loading
 
@@ -36,7 +41,7 @@ fun ExploreScreen(exploreViewModel: ExploreViewModel, modifier: Modifier) {
     } else if (exploreList.isEmpty()) {
       Text(text = "No items found")
     } else {
-      Section(exploreList)
+      Section(exploreList,navController)
     }
   }
 }

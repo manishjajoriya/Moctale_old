@@ -1,6 +1,7 @@
 package com.manishjajoriya.moctale.presentation.exploreScreen.component
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
@@ -18,16 +19,18 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import com.manishjajoriya.moctale.Constants
-import com.manishjajoriya.moctale.domain.model.Content
-import com.manishjajoriya.moctale.domain.model.ExploreItem
+import com.manishjajoriya.moctale.domain.model.explore.Content
+import com.manishjajoriya.moctale.domain.model.explore.ExploreItem
+import com.manishjajoriya.moctale.presentation.navgraph.Routes
 import com.manishjajoriya.moctale.ui.theme.Gray
 import com.manishjajoriya.moctale.ui.theme.Inter
 
 @SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
-fun Section(exploreList: List<ExploreItem>) {
+fun Section(exploreList: List<ExploreItem>, navController: NavHostController) {
   val configuration = LocalConfiguration.current
   val screenWidthDp = configuration.screenWidthDp.dp
   LazyColumn {
@@ -42,6 +45,7 @@ fun Section(exploreList: List<ExploreItem>) {
           )
           Text(
               text = exploreItem.name,
+            Modifier.padding(start = Constants.extraSmallPadding ),
               style =
                   TextStyle(
                       fontFamily = Inter,
@@ -57,7 +61,9 @@ fun Section(exploreList: List<ExploreItem>) {
             modifier = Modifier.heightIn(max = height),
         ) {
           items(exploreItem.contentList.size, key = { exploreItem.contentList[it].slug }) { index ->
-            CardItem(exploreItem.contentList[index])
+            CardItem(exploreItem.contentList[index], onClick = {
+              navController.navigate(Routes.Content.route+"/${exploreItem.contentList[index].slug}")
+            })
           }
         }
       }
@@ -72,10 +78,10 @@ fun calculateHeight(maxWidth: Dp, len: Int): Dp {
 }
 
 @Composable
-fun CardItem(content: Content) {
+fun CardItem(content: Content, onClick: () -> Unit) {
 
   Column(
-      Modifier.padding(Constants.smallPadding),
+      Modifier.padding(Constants.smallPadding).clickable(onClick = onClick),
       horizontalAlignment = Alignment.Start,
   ) {
     AsyncImage(
