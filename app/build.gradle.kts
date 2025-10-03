@@ -42,6 +42,7 @@ dependencies {
   val splashScreen = "1.0.1"
   val navVersion = "2.9.5"
   val youtubePlayerVersion = "13.0.0"
+  val mpAndroidCharVersion = "3.1.0"
 
   //  Api Calling
   implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
@@ -61,6 +62,8 @@ dependencies {
   implementation("androidx.navigation:navigation-compose:$navVersion")
   // YouTube PlayBack
   implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:$youtubePlayerVersion")
+  // MPAndroidChart
+  implementation("com.github.PhilJay:MPAndroidChart:v$mpAndroidCharVersion")
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)

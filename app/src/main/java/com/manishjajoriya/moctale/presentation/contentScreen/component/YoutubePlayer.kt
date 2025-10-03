@@ -14,7 +14,7 @@ fun YouTubePlayer(video: Video, modifier: Modifier = Modifier) {
   val ctx = LocalContext.current
   AndroidView(
       factory = {
-        var view = YouTubePlayerView(it)
+        val view = YouTubePlayerView(it)
         val fragment =
             view.addYouTubePlayerListener(
                 object : AbstractYouTubePlayerListener() {
