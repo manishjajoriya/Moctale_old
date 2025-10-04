@@ -45,7 +45,7 @@ fun Section(exploreList: List<ExploreItem>, navController: NavHostController) {
           )
           Text(
               text = exploreItem.name,
-            Modifier.padding(start = Constants.extraSmallPadding ),
+              Modifier.padding(start = Constants.extraSmallPadding),
               style =
                   TextStyle(
                       fontFamily = Inter,
@@ -61,9 +61,14 @@ fun Section(exploreList: List<ExploreItem>, navController: NavHostController) {
             modifier = Modifier.heightIn(max = height),
         ) {
           items(exploreItem.contentList.size, key = { exploreItem.contentList[it].slug }) { index ->
-            CardItem(exploreItem.contentList[index], onClick = {
-              navController.navigate(Routes.Content.route+"/${exploreItem.contentList[index].slug}")
-            })
+            CardItem(
+                exploreItem.contentList[index],
+                onClick = {
+                  navController.navigate(
+                      Routes.Content.route + "/${exploreItem.contentList[index].slug}"
+                  )
+                },
+            )
           }
         }
       }

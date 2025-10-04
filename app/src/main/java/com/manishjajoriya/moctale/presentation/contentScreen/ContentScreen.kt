@@ -11,28 +11,37 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import coil3.compose.AsyncImage
 import com.manishjajoriya.moctale.Constants
 import com.manishjajoriya.moctale.R
+import com.manishjajoriya.moctale.presentation.contentScreen.component.CategoryChip
+import com.manishjajoriya.moctale.presentation.contentScreen.component.ContentSection
 import com.manishjajoriya.moctale.presentation.contentScreen.component.CustomButton
-import com.manishjajoriya.moctale.presentation.exploreScreen.GenrePieChart
-import com.manishjajoriya.moctale.ui.theme.Black
+import com.manishjajoriya.moctale.presentation.contentScreen.component.MoctaleMeter
+import com.manishjajoriya.moctale.presentation.contentScreen.component.ProfileCircle
+import com.manishjajoriya.moctale.presentation.contentScreen.component.TicketBook
+import com.manishjajoriya.moctale.presentation.contentScreen.component.VibeChart
 import com.manishjajoriya.moctale.ui.theme.Gray
 import com.manishjajoriya.moctale.ui.theme.Inter
 import com.manishjajoriya.moctale.ui.theme.Pink
-import com.manishjajoriya.moctale.ui.theme.White
 
 @Composable
 fun ContentScreen(
@@ -72,12 +81,21 @@ fun ContentScreen(
             ) {
               Row(Modifier.fillMaxWidth()) {
                 Column(Modifier.weight(1f)) {
-                  Text(text = "Directed by")
-                  Text(
-                      text = content.directorList[0].name,
-                      maxLines = 2,
-                      overflow = TextOverflow.Ellipsis,
-                  )
+                  if (content.directorList.isNotEmpty()) {
+                    Text(text = "Directed by")
+                    Text(
+                        text = content.directorList[0].name,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                  } else {
+                    Text(text = "Showrunner")
+                    Text(
+                        text = content.crewList[0].name,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                  }
                 }
                 Column(Modifier.weight(1f)) {
                   Text(text = "Country")
@@ -95,9 +113,11 @@ fun ContentScreen(
                               else ""
                   )
                 }
-                Column(Modifier.weight(1f)) {
-                  Text(text = "Age Rating")
-                  Text(text = content.ageRatingFormatted)
+                content.ageRatingFormatted?.let {
+                  (Column(Modifier.weight(1f)) {
+                    Text(text = "Age Rating")
+                    Text(text = content.ageRatingFormatted)
+                  })
                 }
               }
             }
@@ -106,40 +126,140 @@ fun ContentScreen(
         CustomButton(title = "Mark as Watched", icon = R.drawable.ic_open_eye_icon, color = Pink)
         Spacer(Modifier.height(Constants.extraSmallPadding))
         CustomButton(title = "Add to Collection", icon = R.drawable.ic_bookmark_icon, color = Gray)
-        Text(
-            text = "Overview",
-            Modifier.fillMaxWidth().padding(top = Constants.mediumPadding),
-            style =
-                TextStyle(fontFamily = Inter, fontSize = Constants.mediumFontSize, color = White),
-            textAlign = TextAlign.Start,
-        )
-        Text(
-            text = content.description,
-            Modifier.padding(top = Constants.mediumPadding),
-            style = TextStyle(fontFamily = Inter, color = Gray),
-        )
+        ContentSection(title = "Overview", showHorizontalDivider = false) {
+          Text(
+              text = content.description,
+              Modifier.padding(top = Constants.mediumPadding),
+              style = TextStyle(fontFamily = Inter, color = Gray),
+          )
+        }
+
         FlowRow(
             modifier = Modifier.fillMaxWidth().padding(8.dp),
             horizontalArrangement = Arrangement.Start,
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-          content.genreList.forEach {
-            GenrePill(genre = it.name, modifier = Modifier.padding(end = 8.dp))
+          content.categoryList.forEach {
+            CategoryChip(genre = it.name, modifier = Modifier.padding(end = 8.dp))
           }
         }
         HorizontalDivider(Modifier.padding(top = Constants.smallPadding))
-        Text(
-            text = "Vibe Chart",
-            Modifier.fillMaxWidth().padding(top = Constants.mediumPadding),
-            style =
-                TextStyle(fontFamily = Inter, fontSize = Constants.mediumFontSize, color = White),
-            textAlign = TextAlign.Start,
-        )
-        Box(Modifier.background(Black)) {
-          GenrePieChart(
-              genres = content.genreList,
-              modifier = Modifier.fillMaxWidth().height(300.dp),
-          )
+
+        if (content.genreList.isNotEmpty()) {
+          ContentSection(title = "Vibe Chart") {
+            Column {
+              VibeChart(
+                  genres = content.genreList,
+                  modifier = Modifier.fillMaxWidth().height(300.dp),
+              )
+              FlowRow(
+                  modifier = Modifier.padding(Constants.mediumPadding).fillMaxWidth(),
+                  horizontalArrangement = Arrangement.spacedBy(Constants.mediumPadding),
+                  verticalArrangement = Arrangement.spacedBy(Constants.mediumPadding),
+              ) {
+                content.genreList.forEach { it ->
+                  Row(
+                      Modifier.padding(end = 8.dp),
+                      verticalAlignment = Alignment.CenterVertically,
+                  ) {
+                    Box(
+                        Modifier.size(12.dp)
+                            .clip(CircleShape)
+                            .background(Color(it.color.toColorInt()))
+                    )
+                    Spacer(Modifier.padding(horizontal = Constants.extraSmallPadding))
+                    Text(
+                        text = "${it.name} (${it.percentage}%)",
+                        style = TextStyle(fontFamily = Inter, fontWeight = FontWeight.Medium),
+                    )
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        if (content.actorList.isNotEmpty()) {
+          ContentSection(title = "Cast") {
+            LazyRow(
+                Modifier.fillMaxWidth().padding(Constants.mediumPadding),
+                horizontalArrangement =
+                    Arrangement.spacedBy(Constants.largePadding, Alignment.Start),
+            ) {
+              val actorList = content.actorList
+              items(
+                  actorList.size,
+                  key = { actorList[it].name + actorList[it].slug },
+              ) { it ->
+                val actor = actorList[it]
+                ProfileCircle(image = actor.image, name = actor.name, character = actor.character)
+              }
+            }
+          }
+        }
+
+        if (content.crewList.isNotEmpty()) {
+          ContentSection(title = "Crew") {
+            LazyRow(
+                Modifier.fillMaxWidth().padding(Constants.mediumPadding),
+                horizontalArrangement =
+                    Arrangement.spacedBy(Constants.largePadding, Alignment.Start),
+            ) {
+              val crewList = content.crewList
+              items(
+                  crewList.size,
+                  key = { crewList[it].name + crewList[it].slug },
+              ) { it ->
+                val crew = crewList[it]
+                ProfileCircle(
+                    image = crew.image,
+                    name = crew.name,
+                    character = crew.roleList.reduce { final, str -> "$final, $str" },
+                )
+              }
+            }
+          }
+        }
+        if (content.hasTickets) {
+          ContentSection(title = "Ticket On") {
+            LazyRow(
+                Modifier.fillMaxWidth().padding(Constants.mediumPadding),
+                horizontalArrangement =
+                    Arrangement.spacedBy(Constants.largePadding, Alignment.Start),
+            ) {
+              val ticketSiteList = content.ticketingSiteList
+              items(ticketSiteList.size) { TicketBook(ticketSiteList[it]) }
+            }
+          }
+        }
+
+        ContentSection(title = "Moctale Meter") {
+          val typeOfReview = listOf("Perfection", "Go fot it", "Timepass", "Skip")
+          val reviewCount =
+              listOf(
+                  content.countNegativeReview,
+                  content.countNeutralReview,
+                  content.countPositiveReview,
+                  content.countPerfectReview,
+              )
+          val reviewPercentage =
+              listOf(
+                  content.percentNegativeReview,
+                  content.percentNeutralReview,
+                  content.percentPositiveReview,
+                  content.percentPerfectReview,
+              )
+          val totalReviewCount = content.countTotalReview
+
+          MoctaleMeter(Modifier, reviewCount, reviewPercentage, totalReviewCount)
+          FlowRow() {
+            reviewPercentage.forEachIndexed { index, value ->
+              Row(horizontalArrangement = Arrangement.SpaceAround) {
+                Text(text = typeOfReview[index])
+                Text(text = "${value.toInt()}%")
+              }
+            }
+          }
         }
       }
     }

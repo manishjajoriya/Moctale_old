@@ -1,4 +1,4 @@
-package com.manishjajoriya.moctale.presentation.contentScreen
+package com.manishjajoriya.moctale.presentation.contentScreen.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,7 +16,7 @@ import com.manishjajoriya.moctale.ui.theme.Inter
 import com.manishjajoriya.moctale.ui.theme.White
 
 @Composable
-fun GenrePill(genre: String, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
+fun CategoryChip(genre: String, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
   TextButton(
       onClick = onClick,
       modifier = modifier,

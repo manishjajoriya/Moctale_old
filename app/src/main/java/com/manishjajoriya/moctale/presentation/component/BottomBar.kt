@@ -12,9 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.manishjajoriya.moctale.Constants
@@ -23,40 +20,28 @@ import com.manishjajoriya.moctale.ui.theme.Gray
 import com.manishjajoriya.moctale.ui.theme.Inter
 
 @Composable
-fun BottomBar(modifier: Modifier = Modifier) {
+fun BottomBar(onIconClick: (String) -> Unit) {
   Row(
-      modifier.fillMaxWidth().height(88.dp).navigationBarsPadding().drawBehind {
-        val strokeWidth = 2.dp.toPx()
-        val y = strokeWidth / 2
-        drawLine(
-            color = Color.Gray,
-            start = Offset(0f, y),
-            end = Offset(size.width, y),
-            strokeWidth = strokeWidth,
-        )
-      },
-      horizontalArrangement = Arrangement.SpaceEvenly,
-      verticalAlignment = Alignment.CenterVertically,
+    modifier = Modifier.fillMaxWidth().height(88.dp).navigationBarsPadding(),
+    horizontalArrangement = Arrangement.SpaceEvenly,
+    verticalAlignment = Alignment.CenterVertically
   ) {
-    BottomBarIcon(R.drawable.ic_compass_icon, "Explore")
-    BottomBarIcon(R.drawable.ic_calendar_icon, "Schedule")
-    BottomBarIcon(R.drawable.ic_browse_icon, "Browse")
-    BottomBarIcon(R.drawable.ic_club_icon, "Clubs")
-    BottomBarIcon(R.drawable.ic_person_icon, "Profile")
+    BottomBarIcon(R.drawable.ic_compass_icon, "Explore") { onIconClick("Explore") }
+    BottomBarIcon(R.drawable.ic_calendar_icon, "Schedule") { onIconClick("Schedule") }
+    BottomBarIcon(R.drawable.ic_browse_icon, "Browse") { onIconClick("Browse") }
+    BottomBarIcon(R.drawable.ic_club_icon, "Clubs") { onIconClick("Clubs") }
+    BottomBarIcon(R.drawable.ic_person_icon, "Profile") { onIconClick("Profile") }
   }
 }
 
 @Composable
-fun BottomBarIcon(iconRes: Int, description: String) {
+fun BottomBarIcon(iconRes: Int, description: String, onClick: () -> Unit = {}) {
   Column(
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.Center,
   ) {
-    IconButton(onClick = {}, modifier = Modifier) {
-      Icon(
-          painter = painterResource(iconRes),
-          contentDescription = description,
-      )
+    IconButton(onClick = onClick) {
+      Icon(painter = painterResource(iconRes), contentDescription = description)
     }
     Text(
         text = description,

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Content(
     @SerializedName("actor_list") val actorList: List<Actor>,
-    @SerializedName("age_rating_formatted") val ageRatingFormatted: String,
+    @SerializedName("age_rating_formatted") val ageRatingFormatted: String?,
     val banner: String,
     @SerializedName("award_description") val awardDescription: Any?,
     @SerializedName("category_list") val categoryList: List<Category>,
