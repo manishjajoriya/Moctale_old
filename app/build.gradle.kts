@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
@@ -5,6 +8,16 @@ plugins {
   id("com.google.devtools.ksp")
   id("com.google.dagger.hilt.android")
 }
+
+val localProperties =
+  Properties().apply {
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+      load(FileInputStream(localFile))
+    }
+  }
+
+val authToken: String = localProperties.getProperty("auth_token", "")
 
 android {
   namespace = "com.manishjajoriya.moctale"
@@ -18,6 +31,9 @@ android {
     versionName = "1.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+    buildConfigField("String", "AUTH_TOKEN", "\"$authToken\"")
+    android.buildFeatures.buildConfig = true
   }
 
   buildTypes {

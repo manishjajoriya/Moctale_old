@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.manishjajoriya.moctale.domain.model.explore.ExploreItem
 import com.manishjajoriya.moctale.domain.usecase.MoctaleApiUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,7 +27,7 @@ class ExploreViewModel @Inject constructor(private val moctaleApiUseCase: Moctal
 
   fun fetchExplore() {
     loading = true
-    viewModelScope.launch {
+    viewModelScope.launch(Dispatchers.IO) {
       try {
         exploreList = moctaleApiUseCase.exploreUseCase()
       } catch (e: Exception) {

@@ -1,3 +1,7 @@
 package com.manishjajoriya.moctale.domain.usecase
 
-data class MoctaleApiUseCase(val exploreUseCase: ExploreUseCase, val contentUseCase: ContentUseCase)
+data class MoctaleApiUseCase(
+  val exploreUseCase: ExploreUseCase,
+  val contentUseCase: ContentUseCase,
+  val reviewsUseCase: ReviewsUseCase
+)
