@@ -1,8 +1,8 @@
 # Moctale
-This project is not related to (Moctale.in)[moctale.in] and all the right of contain is hold by moctale.
+This project is not related to [Moctale.in](https://www.moctale.in) and all the right of contain is hold by moctale.
 
 ---
-## 📁 Project Strcutre 
+## 📁 Project Structure 
 ```
 app/
 ├── src/main/java/com/example/app 
@@ -16,7 +16,8 @@ app/
   ├── drawable/              # images & vectro svg
   ├── font/                  # custom font (Inter)
   └── values/
-
+ 
+assets/                      # Demo images
 ```
 
 ---
@@ -69,16 +70,16 @@ gradlew clean assembleDebug
 * APK: `app/build/outputs/apk/debug/app-debug.apk`
 ---
 ## Images
-| Image 1 | Image 2 | Image 4 |
-|---------|---------|---------|
-| <img width="250px" height="auto" alt="1" src="https://github.com/user-attachments/assets/f944ae5a-dab7-41af-a842-0f715e9f7094" /> | <img width="250px" height="auto" alt="2" src="https://github.com/user-attachments/assets/30197667-37bb-4a81-bde5-1fe43b435408" /> | <img width="250px" height="auto" alt="4" src="https://github.com/user-attachments/assets/6a909f04-76bd-41fd-9408-1e4f8b466b57" /> |
+| Image 1                                                        | Image 2                                                        | Image 4                                                        |
+|----------------------------------------------------------------|----------------------------------------------------------------|----------------------------------------------------------------|
+| <img width="250px" height="auto" alt="1" src="assets/1.png" /> | <img width="250px" height="auto" alt="2" src="assets/2.jpg" /> | <img width="250px" height="auto" alt="4" src="assets/3.png" /> |
 
-| Image 3 | Image 5 | Image 6 |
-|---------|---------|---------|
-| <img width="250px" height="auto" alt="3" src="https://github.com/user-attachments/assets/b86dcc59-3fc2-4efe-9b27-0810e52e1f40" /> | <img width="250px" height="auto" alt="5" src="https://github.com/user-attachments/assets/6eceaeb9-b4f9-4d51-a7c4-32102700cc27" /> | <img width="250px" height="auto" alt="6" src="https://github.com/user-attachments/assets/de5c309b-6662-4e2d-ac6d-2baaef021173" /> |
+| Image 3                                                        | Image 5                                                        | Image 6                                                        |
+|----------------------------------------------------------------|----------------------------------------------------------------|----------------------------------------------------------------|
+| <img width="250px" height="auto" alt="3" src="assets/4.png" /> | <img width="250px" height="auto" alt="5" src="assets/5.png" /> | <img width="250px" height="auto" alt="6" src="assets/6.png" /> |
 
-| Image 7 |
-|---------|
-| <img width="250px" height="auto" alt="7" src="https://github.com/user-attachments/assets/a55ecb53-5d45-4360-9ac2-e8382af86fe3" /> |
+| Image 7                                                        |
+|----------------------------------------------------------------|
+| <img width="250px" height="auto" alt="7" src="assets/7.png" /> |
 
 
