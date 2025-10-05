@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -235,6 +236,8 @@ fun ContentScreen(
 
         ContentSection(title = "Moctale Meter") {
           val typeOfReview = listOf("Perfection", "Go fot it", "Timepass", "Skip")
+          val colors =
+              listOf(Color(0xFFFE647E), Color(0xFFFCB700), Color(0xFF00D391), Color(0xFFB048FF))
           val reviewCount =
               listOf(
                   content.countNegativeReview,
@@ -252,11 +255,29 @@ fun ContentScreen(
           val totalReviewCount = content.countTotalReview
 
           MoctaleMeter(Modifier, reviewCount, reviewPercentage, totalReviewCount)
-          FlowRow() {
+          FlowRow(
+              modifier =
+                  Modifier.fillMaxWidth()
+                      .padding(vertical = Constants.mediumPadding)
+                      .offset(y = (-110).dp),
+              horizontalArrangement = Arrangement.Center,
+              maxItemsInEachRow = 1,
+          ) {
             reviewPercentage.forEachIndexed { index, value ->
-              Row(horizontalArrangement = Arrangement.SpaceAround) {
-                Text(text = typeOfReview[index])
-                Text(text = "${value.toInt()}%")
+              Row(
+                  modifier =
+                      Modifier.fillMaxWidth(0.6f).padding(vertical = Constants.extraSmallPadding),
+                  horizontalArrangement = Arrangement.SpaceBetween,
+                  verticalAlignment = Alignment.CenterVertically,
+              ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                  Box(modifier = Modifier.size(12.dp).clip(CircleShape).background(colors[index]))
+                  Text(text = typeOfReview[index], style = TextStyle(fontFamily = Inter))
+                }
+                Text(text = "${value.toInt()}%", style = TextStyle(fontFamily = Inter))
               }
             }
           }

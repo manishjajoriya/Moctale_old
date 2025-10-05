@@ -97,7 +97,7 @@ fun MoctaleMeter(
                 override fun onValueSelected(e: Entry?, h: Highlight?) {
                   if (e is PieEntry) {
                     val type = e.label
-                    val percentage = e.value
+                    val percentage = e.value.toInt()
 
                     val (color, votes) =
                         when (type) {
