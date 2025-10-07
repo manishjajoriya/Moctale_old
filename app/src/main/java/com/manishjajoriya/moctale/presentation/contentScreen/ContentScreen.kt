@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -64,50 +65,44 @@ fun ContentScreen(
   val scrollState = rememberScrollState()
   // Perfect to Negative
   val reviewColors =
-    listOf(Color(0xFFB048FF), Color(0xFF00D391), Color(0xFFFCB700), Color(0xFFFE647E))
+      listOf(Color(0xFFB048FF), Color(0xFF00D391), Color(0xFFFCB700), Color(0xFFFE647E))
 
   if (contentViewModel.loading) {
     Box(contentAlignment = Alignment.Center) { CircularProgressIndicator() }
   } else {
     Column(
-      modifier = modifier
-        .fillMaxSize()
-        .verticalScroll(scrollState),
-      verticalArrangement = Arrangement.Center,
+        modifier = modifier.fillMaxSize().verticalScroll(scrollState),
+        verticalArrangement = Arrangement.Center,
     ) {
       content?.let {
         // Top banner image
         AsyncImage(
             model = content.banner,
-            modifier = Modifier
-              .height(280.dp)
-              .fillMaxWidth(),
+            modifier = Modifier.height(280.dp).fillMaxWidth(),
             contentDescription = "",
             contentScale = ContentScale.Crop,
         )
-        Column(Modifier.padding(Constants.mediumPadding)) {
+        Column(Modifier.padding(Constants.smallPadding)) {
           ContentInfo(content = content)
           CustomButton(title = "Mark as Watched", icon = R.drawable.ic_open_eye_icon, color = Pink)
           Spacer(Modifier.height(Constants.extraSmallPadding))
           CustomButton(
-            title = "Add to Collection",
-            icon = R.drawable.ic_bookmark_icon,
-            color = Gray,
+              title = "Add to Collection",
+              icon = R.drawable.ic_bookmark_icon,
+              color = Gray,
           )
           ContentSection(title = "Overview", showHorizontalDivider = false) {
             Text(
-              text = content.description,
-              Modifier.padding(top = Constants.mediumPadding),
-              style = TextStyle(fontFamily = Inter, color = Gray),
+                text = content.description,
+                Modifier.padding(top = Constants.mediumPadding),
+                style = TextStyle(fontFamily = Inter, color = Gray),
             )
           }
 
           FlowRow(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(8.dp),
-            horizontalArrangement = Arrangement.Start,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+              modifier = Modifier.fillMaxWidth().padding(8.dp),
+              horizontalArrangement = Arrangement.Start,
+              verticalArrangement = Arrangement.spacedBy(8.dp),
           ) {
             content.categoryList.forEach {
               CategoryChip(genre = it.name, modifier = Modifier.padding(end = 8.dp))
@@ -120,33 +115,28 @@ fun ContentScreen(
             ContentSection(title = "Vibe Chart") {
               Column {
                 VibeChart(
-                  genres = content.genreList,
-                  modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp),
+                    genres = content.genreList,
+                    modifier = Modifier.fillMaxWidth().height(300.dp),
                 )
                 FlowRow(
-                  modifier = Modifier
-                    .padding(Constants.mediumPadding)
-                    .fillMaxWidth(),
-                  horizontalArrangement = Arrangement.spacedBy(Constants.mediumPadding),
-                  verticalArrangement = Arrangement.spacedBy(Constants.mediumPadding),
+                    modifier = Modifier.padding(Constants.mediumPadding).fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(Constants.mediumPadding),
+                    verticalArrangement = Arrangement.spacedBy(Constants.mediumPadding),
                 ) {
                   content.genreList.forEach { it ->
                     Row(
-                      Modifier.padding(end = 8.dp),
-                      verticalAlignment = Alignment.CenterVertically,
+                        Modifier.padding(end = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                       Box(
-                        Modifier
-                          .size(12.dp)
-                          .clip(CircleShape)
-                          .background(Color(it.color.toColorInt()))
+                          Modifier.size(12.dp)
+                              .clip(CircleShape)
+                              .background(Color(it.color.toColorInt()))
                       )
                       Spacer(Modifier.padding(horizontal = Constants.extraSmallPadding))
                       Text(
-                        text = "${it.name} (${it.percentage}%)",
-                        style = TextStyle(fontFamily = Inter, fontWeight = FontWeight.Medium),
+                          text = "${it.name} (${it.percentage}%)",
+                          style = TextStyle(fontFamily = Inter, fontWeight = FontWeight.Medium),
                       )
                     }
                   }
@@ -159,16 +149,16 @@ fun ContentScreen(
           if (content.actorList.isNotEmpty()) {
             ContentSection(title = "Cast") {
               LazyRow(
-                Modifier
-                  .fillMaxWidth()
-                  .padding(Constants.mediumPadding),
-                horizontalArrangement =
-                  Arrangement.spacedBy(Constants.largePadding, Alignment.Start),
+                  Modifier.fillMaxWidth()
+                      .heightIn(min = 200.dp)
+                      .padding(top = Constants.mediumPadding),
+                  horizontalArrangement =
+                      Arrangement.spacedBy(Constants.extraSmallPadding, Alignment.Start),
               ) {
                 val actorList = content.actorList
                 items(
-                  actorList.size,
-                  key = { actorList[it].name + actorList[it].slug },
+                    actorList.size,
+                    key = { actorList[it].name + actorList[it].slug },
                 ) { it ->
                   val actor = actorList[it]
                   ProfileCircle(image = actor.image, name = actor.name, character = actor.character)
@@ -181,22 +171,22 @@ fun ContentScreen(
           if (content.crewList.isNotEmpty()) {
             ContentSection(title = "Crew") {
               LazyRow(
-                Modifier
-                  .fillMaxWidth()
-                  .padding(Constants.mediumPadding),
-                horizontalArrangement =
-                  Arrangement.spacedBy(Constants.largePadding, Alignment.Start),
+                  Modifier.fillMaxWidth()
+                      .heightIn(min = 200.dp)
+                      .padding(top = Constants.mediumPadding),
+                  horizontalArrangement =
+                      Arrangement.spacedBy(Constants.extraSmallPadding, Alignment.Start),
               ) {
                 val crewList = content.crewList
                 items(
-                  crewList.size,
-                  key = { crewList[it].name + crewList[it].slug },
+                    crewList.size,
+                    key = { crewList[it].name + crewList[it].slug },
                 ) { it ->
                   val crew = crewList[it]
                   ProfileCircle(
-                    image = crew.image,
-                    name = crew.name,
-                    character = crew.roleList.reduce { final, str -> "$final, $str" },
+                      image = crew.image,
+                      name = crew.name,
+                      character = crew.roleList.reduce { final, str -> "$final, $str" },
                   )
                 }
               }
@@ -207,11 +197,9 @@ fun ContentScreen(
           if (content.hasTickets) {
             ContentSection(title = "Ticket On") {
               LazyRow(
-                Modifier
-                  .fillMaxWidth()
-                  .padding(Constants.mediumPadding),
-                horizontalArrangement =
-                  Arrangement.spacedBy(Constants.largePadding, Alignment.Start),
+                  Modifier.fillMaxWidth().padding(Constants.mediumPadding),
+                  horizontalArrangement =
+                      Arrangement.spacedBy(Constants.largePadding, Alignment.Start),
               ) {
                 val ticketSiteList = content.ticketingSiteList
                 items(ticketSiteList.size) { TicketBook(ticketSiteList[it]) }
@@ -223,56 +211,50 @@ fun ContentScreen(
           ContentSection(title = "Moctale Meter") {
             val typeOfReview = listOf("Perfection", "Go fot it", "Timepass", "Skip")
             val reviewCount =
-              listOf(
-                content.countNegativeReview,
-                content.countNeutralReview,
-                content.countPositiveReview,
-                content.countPerfectReview,
-              )
+                listOf(
+                    content.countNegativeReview,
+                    content.countNeutralReview,
+                    content.countPositiveReview,
+                    content.countPerfectReview,
+                )
             val reviewPercentage =
-              listOf(
-                content.percentNegativeReview,
-                content.percentNeutralReview,
-                content.percentPositiveReview,
-                content.percentPerfectReview,
-              )
+                listOf(
+                    content.percentNegativeReview,
+                    content.percentNeutralReview,
+                    content.percentPositiveReview,
+                    content.percentPerfectReview,
+                )
             val totalReviewCount = content.countTotalReview
 
             MoctaleMeter(Modifier, reviewCount, reviewPercentage, totalReviewCount)
             FlowRow(
-              modifier =
-                Modifier
-                  .fillMaxWidth()
-                  .padding(vertical = Constants.mediumPadding)
-                  .offset(y = (-110).dp),
-              horizontalArrangement = Arrangement.Center,
-              maxItemsInEachRow = 1,
+                modifier =
+                    Modifier.fillMaxWidth()
+                        .padding(vertical = Constants.mediumPadding)
+                        .offset(y = (-110).dp),
+                horizontalArrangement = Arrangement.Center,
+                maxItemsInEachRow = 1,
             ) {
               reviewPercentage.reversed().forEachIndexed { index, value ->
                 Row(
-                  modifier =
-                    Modifier
-                      .fillMaxWidth(0.6f)
-                      .padding(vertical = Constants.extraSmallPadding),
-                  horizontalArrangement = Arrangement.SpaceBetween,
-                  verticalAlignment = Alignment.CenterVertically,
+                    modifier =
+                        Modifier.fillMaxWidth(0.6f).padding(vertical = Constants.extraSmallPadding),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                   Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                      verticalAlignment = Alignment.CenterVertically,
+                      horizontalArrangement = Arrangement.spacedBy(8.dp),
                   ) {
                     Box(
-                      modifier =
-                        Modifier
-                          .size(12.dp)
-                          .clip(CircleShape)
-                          .background(reviewColors[index])
+                        modifier =
+                            Modifier.size(12.dp).clip(CircleShape).background(reviewColors[index])
                     )
                     Text(text = typeOfReview[index], style = TextStyle(fontFamily = Inter))
                   }
                   Text(
-                    text = "${reviewPercentage[reviewPercentage.size - index - 1].roundToInt()}%",
-                    style = TextStyle(fontFamily = Inter),
+                      text = "${reviewPercentage[reviewPercentage.size - index - 1].roundToInt()}%",
+                      style = TextStyle(fontFamily = Inter),
                   )
                 }
               }
