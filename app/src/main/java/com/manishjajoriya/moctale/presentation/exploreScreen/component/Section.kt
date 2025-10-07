@@ -1,23 +1,33 @@
 package com.manishjajoriya.moctale.presentation.exploreScreen.component
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
@@ -31,11 +41,8 @@ import com.manishjajoriya.moctale.ui.theme.Inter
 @SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
 fun Section(exploreList: List<ExploreItem>, navController: NavHostController) {
-  val configuration = LocalConfiguration.current
-  val screenWidthDp = configuration.screenWidthDp.dp
   LazyColumn {
     exploreList.forEach { exploreItem ->
-      val height = calculateHeight(screenWidthDp, exploreItem.contentList.size)
       item {
         Row(Modifier.padding(Constants.smallPadding)) {
           AsyncImage(
@@ -56,18 +63,13 @@ fun Section(exploreList: List<ExploreItem>, navController: NavHostController) {
         }
       }
       item {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(200.dp),
-            modifier = Modifier.heightIn(max = height),
+        FlowRow(
+            horizontalArrangement = Arrangement.Start,
         ) {
-          items(exploreItem.contentList.size, key = { exploreItem.contentList[it].slug }) { index ->
+          exploreItem.contentList.forEach {
             CardItem(
-                exploreItem.contentList[index],
-                onClick = {
-                  navController.navigate(
-                      Routes.Content.route + "/${exploreItem.contentList[index].slug}"
-                  )
-                },
+                it,
+                onClick = { navController.navigate(Routes.Content.route + "/${it.slug}") },
             )
           }
         }
@@ -76,36 +78,81 @@ fun Section(exploreList: List<ExploreItem>, navController: NavHostController) {
   }
 }
 
-fun calculateHeight(maxWidth: Dp, len: Int): Dp {
-  var height = maxWidth / len
-  height = height * 350
-  return height
-}
-
 @Composable
 fun CardItem(content: Content, onClick: () -> Unit) {
-
   Column(
       Modifier.padding(Constants.smallPadding).clickable(onClick = onClick),
       horizontalAlignment = Alignment.Start,
   ) {
+    var isCaption = false
+    val tag =
+        if (content.caption.isNullOrBlank()) {
+          if (content.isShow) "Show • ${content.year}" else "Movie • ${content.year}"
+        } else {
+          isCaption = true
+          content.caption
+        }
+
     AsyncImage(
         model = content.image,
         contentDescription = content.image,
-        Modifier.size(300.dp),
+        Modifier.height(300.dp).width(200.dp),
+        alignment = Alignment.TopStart,
+        contentScale = ContentScale.Crop,
     )
     Text(
+        modifier = Modifier.width(200.dp),
         text = content.name,
-        style = TextStyle(fontFamily = Inter, fontSize = Constants.mediumFontSize),
+        style = TextStyle(fontFamily = Inter, fontSize = Constants.smallFontSize),
         fontWeight = FontWeight.Medium,
         color = Gray,
         maxLines = 1,
     )
-    Text(
-        text = content.caption ?: if (content.isShow) "Show" else "Movie • ${content.year}",
-        style = TextStyle(fontFamily = Inter, fontSize = Constants.extraSmallFontSize),
-        fontWeight = FontWeight.ExtraLight,
-        color = Gray,
-    )
+
+    val style =
+        TextStyle(
+            fontFamily = Inter,
+            fontSize = Constants.extraSmallFontSize,
+            fontWeight = FontWeight.Normal,
+            color = Gray,
+        )
+    if (isCaption) {
+      ShimmerText(
+          text = tag,
+          style =
+              TextStyle(
+                  fontFamily = Inter,
+                  fontSize = Constants.extraSmallFontSize,
+                  fontWeight = FontWeight.Normal,
+                  color = Gray,
+              ),
+      )
+    } else {
+      Text(text = tag, style = style)
+    }
   }
+}
+
+@Composable
+fun ShimmerText(text: String, style: TextStyle) {
+  val transition = rememberInfiniteTransition()
+  val shimmerTranslate by
+      transition.animateFloat(
+          initialValue = -1f,
+          targetValue = 2f,
+          animationSpec =
+              infiniteRepeatable(
+                  animation = tween(durationMillis = 3000, easing = LinearEasing),
+                  repeatMode = RepeatMode.Restart,
+              ),
+      )
+
+  val brush =
+      Brush.linearGradient(
+          colors = listOf(Color.Gray, Color.White, Color.Gray),
+          start = Offset(x = shimmerTranslate * 300, y = 0f),
+          end = Offset(x = (shimmerTranslate + 0.5f) * 300, y = 0f),
+      )
+  val newStyle = style.copy(brush = brush)
+  Text(text = text, style = newStyle)
 }
