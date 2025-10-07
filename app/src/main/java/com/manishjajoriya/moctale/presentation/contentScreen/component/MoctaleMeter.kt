@@ -26,6 +26,7 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.manishjajoriya.moctale.R
+import kotlin.math.roundToInt
 
 @Composable
 fun MoctaleMeter(
@@ -34,7 +35,9 @@ fun MoctaleMeter(
     reviewPercentage: List<Double>,
     totalReviewCount: Int,
 ) {
-  Box(modifier = modifier.fillMaxWidth().height(300.dp)) {
+  Box(modifier = modifier
+    .fillMaxWidth()
+    .height(400.dp)) {
     AndroidView(
         modifier = Modifier.fillMaxSize(),
         factory = { context ->
@@ -46,7 +49,7 @@ fun MoctaleMeter(
             setHoleColor("#FF080808".toColorInt())
             setDrawEntryLabels(false)
             legend.isEnabled = false
-            setExtraOffsets(0f, 0f, 0f, 0f)
+            setExtraOffsets(0f, 20f, 0f, 0f)
             isRotationEnabled = false
             setDrawCenterText(true)
             setCenterTextSize(16f)
@@ -97,7 +100,7 @@ fun MoctaleMeter(
                 override fun onValueSelected(e: Entry?, h: Highlight?) {
                   if (e is PieEntry) {
                     val type = e.label
-                    val percentage = e.value.toInt()
+                    val percentage = e.value.roundToInt()
 
                     val (color, votes) =
                         when (type) {
