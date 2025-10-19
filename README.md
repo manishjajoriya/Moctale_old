@@ -1,5 +1,7 @@
 # Moctale
 This project is not related to [Moctale.in](https://www.moctale.in) and all the right of contain is hold by moctale.
+> [!IMPORTANT]  
+> This is not the main repo. Main Repo with latest feature and many more things is private as of now. and this repo lack features so use accordingly.
 
 ---
 ## 📁 Project Structure 
